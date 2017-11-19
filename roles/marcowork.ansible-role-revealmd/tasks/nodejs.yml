@@ -1,0 +1,11 @@
+---
+# tasks file for installing NodeJS
+
+ - name: run setup script to check if the EPEL repo is available
+   shell: sudo curl --silent --location https://rpm.nodesource.com/setup_8.x | sudo bash -
+   ignore_errors: yes
+
+ - name: install latest version of NodeJS
+   yum:
+    name: nodejs
+    state: present

@@ -1,0 +1,10 @@
+---
+  # this will get reveal-MD from github using NodeJS Package Manager (NPM)
+
+  - name: Download Reveal-MD and forever from GITHUB.com
+    npm:
+      name: "{{ item }}"
+      global: yes
+    with_items:
+      - reveal-md
+      - forever

@@ -1,0 +1,7 @@
+---
+  # this will create a directory structure where the actual Reveal-MD presentation will live
+- name: create directory structure for presentation
+  file:
+    path: /data
+    state: directory
+    mode: 0755

@@ -1,0 +1,4 @@
+- name: marcowork.ansible-role-revealmd
+  src: marcowork.ansible-role-revealmd
+- name: marcowork.ansibletraining
+  scr: https://github.com/marcowork/ansibletraining

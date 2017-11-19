@@ -1,0 +1,9 @@
+---
+#This ansible playbook will install a Reveal-MD presentation.
+
+- hosts: all
+  remote_user: root
+  become: yes
+  roles:
+    - marcowork.ansible-role-revealmd
+    - marcowork.ansibletraining

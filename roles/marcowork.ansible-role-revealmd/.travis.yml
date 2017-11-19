@@ -1,0 +1,27 @@
+---
+sudo: required
+language: python
+services: docker
+
+env:
+  - distro: centos:7
+
+
+before_install:
+  - docker pull "${distro}"
+
+install:
+  - role=$(basename $(pwd) | sed 's/ansible-role-//g')
+  - containerid=$(docker container run --detach --volume $(pwd):/etc/ansible/roles/${role} ${distro} sleep 3600)
+  - if [[ ${distro} == centos:7 ]] ; then docker exec ${containerid} yum -y install epel-release ; fi
+  - if [[ ${distro} == centos:* ]] ; then docker exec ${containerid} yum -y install ansible ; fi
+
+
+script:
+  - test -f requirements.yml && docker exec ${containerid} ansible-galaxy install --ignore-certs --role-file /etc/ansible/roles/${role}/requirements.yml || echo "No requirements.yml found."
+  - docker exec ${containerid} ansible-playbook --inventory /etc/ansible/roles/${role}/tests/inventory /etc/ansible/roles/${role}/tests/test.yml --syntax-check
+  - docker exec ${containerid} ansible-playbook --inventory /etc/ansible/roles/${role}/tests/inventory /etc/ansible/roles/${role}/tests/test.yml --connection=local --become
+
+notifications:
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/
+  email: false
